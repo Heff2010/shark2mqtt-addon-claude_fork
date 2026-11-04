@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Shark Token Saver (for shark2mqtt)",
+  "version": "1.0.0",
+  "description": "Log in to SharkNinja in your own browser and save the shark2mqtt_tokens.json file that shark2mqtt uses.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "shark-token-saver@local",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "permissions": [
+    "downloads",
+    "storage",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "https://login.sharkninja.com/*",
+    "https://logineu.sharkninja.com/*"
+  ],
+  "background": {
+    "scripts": ["shared.js", "background.js"],
+    "persistent": true
+  },
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "browser_action": {
+    "default_title": "Shark Token Saver",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "32": "icons/icon.svg"
+    }
+  }
+}

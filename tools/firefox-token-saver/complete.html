@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shark Token Saver – Result</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page">
+  <main>
+    <h1 id="title">Shark Token Saver</h1>
+    <p id="message"></p>
+
+    <section id="success" hidden>
+      <p id="refresh-warning" class="warning" hidden>
+        Shark didn't send a long-lived refresh token, so shark2mqtt will need a fresh login once this token expires.
+      </p>
+      <div class="actions">
+        <button id="copy" class="primary">Copy token</button>
+        <button id="save">Save file again</button>
+        <button id="clear" class="danger">Clear from this browser</button>
+      </div>
+      <p id="action-status" class="status" role="status"></p>
+      <label for="token">shark2mqtt_tokens.json</label>
+      <textarea id="token" readonly rows="10" spellcheck="false"></textarea>
+
+      <h2>Next: put it in the Home Assistant app</h2>
+      <ol>
+        <li>If your app has a <code>shark_token</code> option, click <strong>Copy token</strong>, paste it there, save, and start the app.</li>
+        <li>Otherwise, put the saved file into the app's data folder using the steps in this extension's README.</li>
+        <li>Start the app. Its log should say <code>Loaded cached tokens</code>.</li>
+        <li>Then click <strong>Clear from this browser</strong> above and delete any saved copy.</li>
+      </ol>
+      <p class="note">Use a fresh login for each app. Don't copy one app's token into another.</p>
+      <p class="note">This token works like a password for your Shark account. Don't share it or post it anywhere.</p>
+    </section>
+
+    <section id="failure" hidden>
+      <p>Click the extension's toolbar button and choose <strong>Start Shark login</strong> to try again. If Shark says your account is locked, wait a few hours first.</p>
+    </section>
+
+    <section id="empty" hidden>
+      <p>No login result yet. Click the extension's toolbar button and choose <strong>Start Shark login</strong>.</p>
+    </section>
+  </main>
+  <script src="complete.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shark Token Saver</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="popup">
+  <h1>Shark Token Saver</h1>
+  <p>Opens the SharkNinja login in a new tab. Sign in yourself, including the "verify you are human" box. When you're done, you'll get the token file for shark2mqtt.</p>
+  <label for="region">Shark account region</label>
+  <select id="region">
+    <option value="us" selected>US</option>
+    <option value="eu">EU</option>
+  </select>
+  <button id="start" class="primary">Start Shark login</button>
+  <button id="result" class="link" hidden>Show last result</button>
+  <p id="status" class="status" role="status"></p>
+  <script src="popup.js"></script>
+</body>
+</html>
