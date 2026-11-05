@@ -17,6 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY run.sh /run.sh
+COPY seed_token.py /seed_token.py
 RUN chmod 755 /run.sh
 
 ENV PYTHONUNBUFFERED=1

@@ -16,8 +16,10 @@ hassio_api: true
 services:
   - mqtt:need
 options:
-  shark_username: null
-  shark_password: null
+  shark_token: ""
+  browser_login: false
+  shark_username: ""
+  shark_password: ""
   shark_region: us
   shark_household_id: ""
   use_supervisor_mqtt_service: true
@@ -29,10 +31,13 @@ options:
   run_side_by_side: true
   poll_interval: 300
   poll_interval_active: 20
+  pause_operating_mode: "1"
   log_level: INFO
 schema:
-  shark_username: email
-  shark_password: password
+  shark_token: password?
+  browser_login: bool
+  shark_username: str?
+  shark_password: password?
   shark_region: list(us|eu)
   shark_household_id: str?
   use_supervisor_mqtt_service: bool
@@ -44,4 +49,5 @@ schema:
   run_side_by_side: bool
   poll_interval: int(10,3600)
   poll_interval_active: int(5,300)
+  pause_operating_mode: list(1|0)
   log_level: list(DEBUG|INFO|WARNING|ERROR)
