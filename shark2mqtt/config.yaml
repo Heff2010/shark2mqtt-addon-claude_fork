@@ -8,10 +8,6 @@ url: https://github.com/Heff2010/shark2mqtt-addon-claude_fork
 arch:
   - amd64
   - aarch64
-startup: application
-boot: auto
-apparmor: true
-backup: hot
 hassio_api: true
 services:
   - mqtt:need
