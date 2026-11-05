@@ -48,6 +48,19 @@ if [ ! -r "$CONFIG_PATH" ]; then
   fatal "Home Assistant add-on options file exists but is not readable at $CONFIG_PATH. This wrapper must run as root."
 fi
 
+# Save a copy of the log to one file per day in the share folder, so it
+# outlives the Home Assistant log view. See log_to_file.py.
+LOG_FILE_DIR="/share/claude_shark2mqtt/logs"
+if [ "$(read_option log_to_file)" = "true" ]; then
+  LOG_FILE_DAYS="$(read_option log_file_days)"
+  if mkdir -p "$LOG_FILE_DIR" 2>/dev/null; then
+    exec > >(python3 -I /log_to_file.py "$LOG_FILE_DIR" "${LOG_FILE_DAYS:-14}") 2>&1
+    log "Saving the log to share/claude_shark2mqtt/logs (one file per day, kept ${LOG_FILE_DAYS:-14} days)."
+  else
+    warn "Can't create ${LOG_FILE_DIR}; the log won't be saved to files."
+  fi
+fi
+
 log "Reading Home Assistant add-on configuration..."
 
 SHARK_USERNAME="$(read_option shark_username)"
@@ -155,7 +168,7 @@ export_if_set MQTT_PASSWORD "$MQTT_PASSWORD"
 if [ "$(read_option run_side_by_side)" = "true" ]; then
   MQTT_PREFIX="claude_shark2mqtt"
   export ENTITY_ID_PREFIX="claude"
-  log "Side by side: on (MQTT prefix claude_shark2mqtt, entities like vacuum.claude_<name>)."
+  log "Side by side: on (MQTT prefix claude_shark2mqtt, entity IDs end in _claude, e.g. vacuum.sharkvac_claude)."
 else
   log "Side by side: off (uses the original entity IDs; stop the original app first)."
 fi

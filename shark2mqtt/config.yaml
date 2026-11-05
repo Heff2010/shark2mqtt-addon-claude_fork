@@ -1,5 +1,5 @@
 name: Claude Shark2MQTT
-version: "1.0.8-claude.2"
+version: "1.0.8-claude.3"
 slug: claude_shark2mqtt
 description: >-
   Shark2MQTT with UR2850ZEUS fixes and a manual-login token option. Installs
@@ -11,6 +11,9 @@ arch:
 hassio_api: true
 services:
   - mqtt:need
+map:
+  - type: share
+    read_only: false
 options:
   shark_token: ""
   browser_login: false
@@ -29,6 +32,8 @@ options:
   poll_interval_active: 20
   pause_operating_mode: "1"
   log_level: INFO
+  log_to_file: true
+  log_file_days: 14
 schema:
   shark_token: password?
   browser_login: bool
@@ -47,3 +52,5 @@ schema:
   poll_interval_active: int(5,300)
   pause_operating_mode: list(1|0)
   log_level: list(DEBUG|INFO|WARNING|ERROR)
+  log_to_file: bool
+  log_file_days: int(1,365)
