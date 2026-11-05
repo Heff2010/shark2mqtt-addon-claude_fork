@@ -1,6 +1,6 @@
 # Shark Token Saver (for shark2mqtt)
 
-A small Firefox extension that lets you do the SharkNinja login yourself, in your normal browser, and saves the `shark2mqtt_tokens.json` file that [shark2mqtt](https://github.com/CamSoper/shark2mqtt) uses.
+A small Firefox extension that lets you do the SharkNinja login yourself, in your normal browser, and saves the `shark2mqtt_tokens.json` file that shark2mqtt uses. It works with both the [original shark2mqtt](https://github.com/CamSoper/shark2mqtt) and [this fork's version](https://github.com/Heff2010/shark2mqtt-claude_fork).
 
 Use it when shark2mqtt's automatic login fails with Cloudflare's "verify you are human" check (for example *"We couldn't load the security challenge"*). Because you're a person in a real browser, the check passes. With this file in place, shark2mqtt uses the saved token and skips its own browser login.
 
