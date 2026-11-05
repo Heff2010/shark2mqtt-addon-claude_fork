@@ -1,5 +1,5 @@
 name: Claude Shark2MQTT
-version: "1.0.8-claude.1"
+version: "1.0.8-claude.2"
 slug: claude_shark2mqtt
 description: >-
   Shark2MQTT with UR2850ZEUS fixes and a manual-login token option. Installs
