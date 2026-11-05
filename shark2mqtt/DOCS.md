@@ -22,7 +22,7 @@ A modified version of the Shark2MQTT app. It bridges SharkNinja robot vacuums to
 With **Run side by side** on, this app:
 
 - uses MQTT topics under `claude_shark2mqtt/` (the original uses `shark2mqtt/`), so commands never reach both apps;
-- creates its own device, **SharkVac (claude)**, with entities such as `vacuum.claude_sharkvac` and `select.claude_sharkvac_clean_mode`.
+- creates its own device, **SharkVac (claude)**, with entities such as `vacuum.sharkvac_claude` and `select.sharkvac_claude_clean_mode`.
 
 Your dashboards, scripts, Assist and HomeKit keep using the original entities. Both apps control the same robot, so a command from either one moves it.
 
@@ -45,3 +45,4 @@ If the log says `Shark login needed`, do a new login with the Token Saver extens
 - **MQTT**: by default the app gets the broker details from Home Assistant (recommended with the Mosquitto app). Turn off **Use Home Assistant's MQTT service** to enter them yourself.
 - **Poll interval / Active poll interval**: how often the Shark cloud is asked for status, idle (300 s) and while cleaning or a job exists (20 s).
 - **Log level**: `DEBUG` shows the robot's raw values each poll, which helps when reporting a problem.
+- **Save log to files** (on by default) and **Days of log files to keep** (14): the app also writes its log to one file per day in `share/claude_shark2mqtt/logs`, for example `2026-11-06.log`. Open them with the Samba share or the File editor app. With `DEBUG` they take roughly 2 MB on a quiet day and up to about 30 MB on a busy one. They contain your device IDs and room names, so remove those before sharing a log.

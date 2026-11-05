@@ -58,7 +58,7 @@ configuration:
     name: Run side by side with the original app
     description: >-
       On: this app uses its own MQTT topics and entity IDs (for example
-      vacuum.claude_sharkvac), so it can run at the same time as the
+      vacuum.sharkvac_claude), so it can run at the same time as the
       original Shark2MQTT app. Off: it uses the original entity IDs (for
       example vacuum.sharkvac). Only turn it off after stopping the original.
   poll_interval:
@@ -80,3 +80,13 @@ configuration:
     description: >-
       Verbosity of app logs. Use DEBUG for troubleshooting, INFO for
       normal operation.
+  log_to_file:
+    name: Save log to files
+    description: >-
+      Also write the log to one file per day in
+      share/claude_shark2mqtt/logs (reachable with Samba or the File editor
+      app). The files contain your device IDs and room names, so remove
+      those before sharing a log.
+  log_file_days:
+    name: Days of log files to keep
+    description: Log files older than this are deleted automatically (default 14).

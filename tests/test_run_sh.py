@@ -36,6 +36,8 @@ BASE_OPTIONS = {
     "poll_interval_active": 20,
     "pause_operating_mode": "1",
     "log_level": "DEBUG",
+    "log_to_file": False,
+    "log_file_days": 14,
 }
 
 pytestmark = pytest.mark.skipif(shutil.which("jq") is None, reason="needs jq")
@@ -50,6 +52,8 @@ def run_wrapper(tmp_path: Path, **overrides) -> tuple[subprocess.CompletedProces
     script = (
         script.replace('"/data', f'"{data}')
         .replace("/seed_token.py", str(ROOT / "seed_token.py"))
+        .replace("/log_to_file.py", str(ROOT / "log_to_file.py"))
+        .replace('"/share/claude_shark2mqtt/logs"', f'"{tmp_path / "share" / "logs"}"')
         .replace("Xvfb :99", "true :99")
         .replace("/tmp/.X11-unix", str(tmp_path / "x11"))
         .replace("/tmp/.X99-lock", str(tmp_path / "x99-lock"))
@@ -127,3 +131,23 @@ def test_bad_token_warns_and_keeps_existing_file(tmp_path):
     assert "shark_token could not be used" in result.stderr
     assert (tmp_path / "data" / "shark2mqtt_tokens.json").read_text() == before
     assert env
+
+
+def test_log_to_file_off_by_option(tmp_path):
+    result, _ = run_wrapper(tmp_path, shark_token=REFRESH)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not (tmp_path / "share").exists()
+
+
+def test_log_to_file_copies_wrapper_output(tmp_path):
+    result, env = run_wrapper(tmp_path, shark_token=REFRESH, log_to_file=True, log_file_days=3)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert env["MQTT_PREFIX"] == "claude_shark2mqtt"
+    files = list((tmp_path / "share" / "logs").glob("????-??-??.log"))
+    assert len(files) == 1
+    saved = files[0].read_text()
+    # Same lines as the HA log view, including stderr warnings.
+    assert "Saving the log to share/claude_shark2mqtt/logs" in saved
+    assert "Configuration loaded." in saved
+    assert "Configuration loaded." in result.stdout
+    assert REFRESH not in saved

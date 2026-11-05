@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.8-claude.3
+
+- **Save log to files** (new, on by default): the log is also written to one
+  file per day in `share/claude_shark2mqtt/logs`, so it outlives the Home
+  Assistant log view. Files older than **Days of log files to keep** (14 by
+  default) are deleted automatically.
+- Corrected the example entity IDs in the docs and the log: side by side
+  entities are named like `vacuum.sharkvac_claude`.
+
 ## 1.0.8-claude.2
 
 Bridge image: `ghcr.io/heff2010/shark2mqtt:1.5.5-claude.3`
