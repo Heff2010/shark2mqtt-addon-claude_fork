@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  app-config:
+    name: Check the HA app config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: frenck/action-addon-linter@v2
+        with:
+          path: "./shark2mqtt"
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pytest
+        run: pip install "pytest>=8,<9"
+      - name: Wrapper tests (token seeding, run.sh option mapping)
+        run: python -m pytest tests/ -v
+      - name: Token saver extension flow test
+        run: node tools/firefox-token-saver/tests/flow.test.js
+      - name: Shell syntax
+        run: bash -n shark2mqtt/run.sh

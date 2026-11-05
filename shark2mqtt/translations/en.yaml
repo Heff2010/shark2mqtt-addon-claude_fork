@@ -1,15 +1,29 @@
 configuration:
+  shark_token:
+    name: Shark token
+    description: >-
+      Paste the token from the Shark Token Saver browser extension (Copy
+      token button), or a bare refresh token. The app saves it once; after
+      that it keeps the token fresh by itself, so you only paste a new one
+      if the log says "Shark login needed". The value is never logged.
+  browser_login:
+    name: Automated browser login
+    description: >-
+      Off (recommended): the app never tries to log in to Shark by itself
+      and uses the Shark token above. On: the app may launch its own
+      browser login with the email and password below, which fails on many
+      setups and repeated failures can lock your Shark account.
   shark_username:
     name: Shark account email
-    description: The email address you use to log in to the SharkNinja app.
+    description: Only needed when automated browser login is on.
   shark_password:
     name: Shark account password
-    description: Your SharkNinja app password.
+    description: Only needed when automated browser login is on.
   mqtt_host:
     name: MQTT broker hostname
     description: >-
       Hostname or IP of your MQTT broker. If you're using the Mosquitto
-      add-on, this is typically "core-mosquitto".
+      app, this is typically "core-mosquitto".
   shark_region:
     name: Region
     description: >-
@@ -20,6 +34,11 @@ configuration:
     description: >-
       Leave blank to let shark2mqtt discover your household ID automatically.
       Only set this if auto-discovery fails.
+  use_supervisor_mqtt_service:
+    name: Use Home Assistant's MQTT service
+    description: >-
+      Get the broker address and login from Home Assistant (recommended
+      with the Mosquitto app). Turn off to use the MQTT settings below.
   mqtt_port:
     name: MQTT port
     description: Port your MQTT broker listens on (default 1883).
@@ -32,18 +51,32 @@ configuration:
   mqtt_prefix:
     name: MQTT topic prefix
     description: >-
-      Prefix for all MQTT topics published by shark2mqtt. Default is
-      "shark2mqtt". Change this only if you have topic conflicts.
+      Prefix for MQTT topics when "Run side by side" is off. Default
+      "shark2mqtt". Ignored while "Run side by side" is on, which uses
+      "claude_shark2mqtt".
+  run_side_by_side:
+    name: Run side by side with the original app
+    description: >-
+      On: this app uses its own MQTT topics and entity IDs (for example
+      vacuum.claude_sharkvac), so it can run at the same time as the
+      original Shark2MQTT app. Off: it uses the original entity IDs (for
+      example vacuum.sharkvac). Only turn it off after stopping the original.
   poll_interval:
     name: Poll interval (seconds)
     description: How often to poll the SharkNinja cloud when the vacuum is idle (default 300).
   poll_interval_active:
     name: Active poll interval (seconds)
     description: >-
-      How often to poll while the vacuum is cleaning or returning to dock
-      (default 20). Lower values give more responsive status updates.
+      How often to poll while the vacuum is cleaning, paused, returning or
+      has a job (default 20). Lower values give more responsive updates.
+  pause_operating_mode:
+    name: Pause command value
+    description: >-
+      Value sent to the robot for "pause". 1 works on most models. Some
+      models (for example UR2850ZEUS) ignore 1; 0 may pause them instead,
+      but on some models 0 means stop. Test before relying on it.
   log_level:
     name: Log level
     description: >-
-      Verbosity of add-on logs. Use DEBUG for troubleshooting, INFO for
+      Verbosity of app logs. Use DEBUG for troubleshooting, INFO for
       normal operation.

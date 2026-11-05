@@ -37,7 +37,7 @@ json_value() {
   echo "$json" | jq -r "$filter // empty"
 }
 
-log "Starting Shark2MQTT Home Assistant add-on wrapper..."
+log "Starting Claude Shark2MQTT Home Assistant app wrapper..."
 log "Container user: $(id -u):$(id -g)"
 
 if [ ! -f "$CONFIG_PATH" ]; then
@@ -62,12 +62,33 @@ MQTT_USERNAME="$(read_option mqtt_username)"
 MQTT_PASSWORD="$(read_option mqtt_password)"
 MQTT_PREFIX="$(read_option mqtt_prefix)"
 
-if [ -z "$SHARK_USERNAME" ] || [ "$SHARK_USERNAME" = "null" ]; then
-  fatal "shark_username is required. Set it in the add-on Configuration tab."
+# Browser login (the bridge's automated Chromium login) is off by default:
+# it fails Cloudflare's check on many hosts and repeated tries can lock the
+# Shark account. Tokens come from the shark_token option instead.
+if [ "$(read_option browser_login)" = "true" ]; then
+  BROWSER_LOGIN="true"
+else
+  BROWSER_LOGIN="false"
 fi
+export BROWSER_LOGIN
+log "Browser login: ${BROWSER_LOGIN}"
 
-if [ -z "$SHARK_PASSWORD" ] || [ "$SHARK_PASSWORD" = "null" ]; then
-  fatal "shark_password is required. Set it in the add-on Configuration tab."
+if [ "$BROWSER_LOGIN" = "true" ]; then
+  if [ -z "$SHARK_USERNAME" ] || [ "$SHARK_USERNAME" = "null" ]; then
+    fatal "shark_username is required when browser_login is on. Set it in the app's Configuration tab."
+  fi
+  if [ -z "$SHARK_PASSWORD" ] || [ "$SHARK_PASSWORD" = "null" ]; then
+    fatal "shark_password is required when browser_login is on. Set it in the app's Configuration tab."
+  fi
+else
+  # The bridge requires these settings to exist, but only the browser login
+  # uses them. Placeholders keep it starting when they're left blank.
+  if [ -z "$SHARK_USERNAME" ] || [ "$SHARK_USERNAME" = "null" ]; then
+    SHARK_USERNAME="not-used@invalid.example"
+  fi
+  if [ -z "$SHARK_PASSWORD" ] || [ "$SHARK_PASSWORD" = "null" ]; then
+    SHARK_PASSWORD="not-used"
+  fi
 fi
 
 if [ "$USE_SUPERVISOR_MQTT_SERVICE" = "true" ]; then
@@ -129,7 +150,17 @@ export_if_set SHARK_REGION "$SHARK_REGION"
 export_if_set SHARK_HOUSEHOLD_ID "$SHARK_HOUSEHOLD_ID"
 export_if_set MQTT_USERNAME "$MQTT_USERNAME"
 export_if_set MQTT_PASSWORD "$MQTT_PASSWORD"
+# Side by side: give this app its own MQTT topics and entity IDs, so it can
+# run at the same time as the original Shark2MQTT app on the same broker.
+if [ "$(read_option run_side_by_side)" = "true" ]; then
+  MQTT_PREFIX="claude_shark2mqtt"
+  export ENTITY_ID_PREFIX="claude"
+  log "Side by side: on (MQTT prefix claude_shark2mqtt, entities like vacuum.claude_<name>)."
+else
+  log "Side by side: off (uses the original entity IDs; stop the original app first)."
+fi
 export_if_set MQTT_PREFIX "$MQTT_PREFIX"
+export_if_set PAUSE_OPERATING_MODE "$(read_option pause_operating_mode)"
 export_if_set POLL_INTERVAL "$(read_option poll_interval)"
 export_if_set POLL_INTERVAL_ACTIVE "$(read_option poll_interval_active)"
 export_if_set LOG_LEVEL "$(read_option log_level)"
@@ -145,6 +176,16 @@ chmod 1777 /tmp/.X11-unix
 
 # Make sure token persistence can write to /data.
 chmod u+rwX /data || true
+
+# Seed the token file from the shark_token option, once per new value. The
+# value goes through the environment of this one command only, never the
+# command line or the log.
+if ! SHARK_TOKEN_OPTION="$(read_option shark_token)" python3 -I /seed_token.py "$TOKEN_DIR"; then
+  warn "shark_token could not be used; see the message above."
+fi
+if [ ! -f "${TOKEN_DIR}/shark2mqtt_tokens.json" ] && [ "$BROWSER_LOGIN" != "true" ]; then
+  warn "No Shark token yet. Paste one into the shark_token option (see the Documentation tab), save, and restart the app."
+fi
 
 log "Configuration loaded."
 log "MQTT broker: ${MQTT_HOST}:${MQTT_PORT}"
