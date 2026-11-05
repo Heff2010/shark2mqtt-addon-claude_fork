@@ -37,7 +37,7 @@ json_value() {
   echo "$json" | jq -r "$filter // empty"
 }
 
-log "Starting Shark2MQTT Home Assistant add-on wrapper..."
+log "Starting Claude Shark2MQTT Home Assistant app wrapper..."
 log "Container user: $(id -u):$(id -g)"
 
 if [ ! -f "$CONFIG_PATH" ]; then
@@ -129,6 +129,15 @@ export_if_set SHARK_REGION "$SHARK_REGION"
 export_if_set SHARK_HOUSEHOLD_ID "$SHARK_HOUSEHOLD_ID"
 export_if_set MQTT_USERNAME "$MQTT_USERNAME"
 export_if_set MQTT_PASSWORD "$MQTT_PASSWORD"
+# Side by side: give this app its own MQTT topics and entity IDs, so it can
+# run at the same time as the original Shark2MQTT app on the same broker.
+if [ "$(read_option run_side_by_side)" = "true" ]; then
+  MQTT_PREFIX="claude_shark2mqtt"
+  export ENTITY_ID_PREFIX="claude"
+  log "Side by side: on (MQTT prefix claude_shark2mqtt, entities like vacuum.claude_<name>)."
+else
+  log "Side by side: off (uses the original entity IDs; stop the original app first)."
+fi
 export_if_set MQTT_PREFIX "$MQTT_PREFIX"
 export_if_set POLL_INTERVAL "$(read_option poll_interval)"
 export_if_set POLL_INTERVAL_ACTIVE "$(read_option poll_interval_active)"
