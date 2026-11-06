@@ -94,3 +94,30 @@ Almost all of the work is by others:
 
 This fork adds the UR2850ZEUS fixes, the token login and the app changes
 listed above.
+
+---
+
+## Credits and attribution
+
+The Shark Token Saver extension ([`tools/firefox-token-saver/`](tools/firefox-token-saver))
+is based on the design of **OnStar Auth Token Saver** by Matt Nelson
+([metheos](https://github.com/metheos)): https://github.com/metheos/onstar_firefox
+
+Its overall structure, the way it catches the login's final redirect to the
+phone app's custom address, its PKCE login handling and its token-file download
+approach all follow that project. This project added the SharkNinja login, the
+shark2mqtt token file format, the result page, the Home Assistant steps and the
+tests.
+
+**License note:** the original OnStar Auth Token Saver repository has no
+license. The parts of this extension derived from it remain the work of their
+original author and are credited to that author. Nothing in this repository
+relicenses them; any license here covers only the changes and additions made
+here. They are included in good faith, with credit, and will be removed if the
+original author asks. If this extension is no longer in this repository, it was
+removed at the original creator's request. Original authors can request removal
+by opening an issue on this repository.
+
+The Shark login constants and token file format come from **shark2mqtt** by Cam
+Soper ([CamSoper](https://github.com/CamSoper)), MIT licensed:
+https://github.com/CamSoper/shark2mqtt
