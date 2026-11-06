@@ -1,6 +1,6 @@
 # Claude Shark2MQTT
 
-A modified version of the Shark2MQTT app. It bridges SharkNinja robot vacuums to Home Assistant through MQTT, using a modified [shark2mqtt bridge](https://github.com/Heff2010/shark2mqtt-claude_fork) with:
+A modified version of the [Shark2MQTT app](https://github.com/400HPMustang/shark2mqtt-addon) by 400HPMustang, which runs Cam Soper's [shark2mqtt](https://github.com/CamSoper/shark2mqtt). It bridges SharkNinja robot vacuums to Home Assistant through MQTT, using a modified [shark2mqtt bridge](https://github.com/Heff2010/shark2mqtt-claude_fork) with:
 
 - Correct **paused**, **docked** and **cleaning** states on models that report a clean job (tested on a UR2850ZEUS), including runs started from the Shark app or a Shark schedule.
 - Faster status updates as soon as a clean job exists.
@@ -8,6 +8,7 @@ A modified version of the Shark2MQTT app. It bridges SharkNinja robot vacuums to
 - A **Shark token** option, so you can log in to Shark in your own browser instead of the app's automated login.
 - A configurable **pause** value for models that ignore the standard one.
 - A **Run side by side** mode, so it can run at the same time as the original Shark2MQTT app.
+- **Log saving** to one file per day, so the log survives a restart.
 
 ## First-time setup
 
@@ -41,7 +42,7 @@ If the log says `Shark login needed`, do a new login with the Token Saver extens
 ## Other options
 
 - **Automated browser login**: off by default. When on, the app may try its own browser login with your Shark email and password. That fails on many setups, and repeated failures can lock your Shark account.
-- **Pause command value**: `1` (default) or `0`. Some models ignore `1` for pause. `0` may work instead, but on some models it means stop, so test it while watching the robot.
+- **Pause command value**: `1` (default) or `0`. Some models ignore `1` for pause. `0` may work instead, but on some models it means stop, so test it while watching the robot. The UR2850ZEUS needs `0`.
 - **MQTT**: by default the app gets the broker details from Home Assistant (recommended with the Mosquitto app). Turn off **Use Home Assistant's MQTT service** to enter them yourself.
 - **Poll interval / Active poll interval**: how often the Shark cloud is asked for status, idle (300 s) and while cleaning or a job exists (20 s).
 - **Log level**: `DEBUG` shows the robot's raw values each poll, which helps when reporting a problem.
