@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.8-claude.4
+
+Bridge image: `ghcr.io/heff2010/shark2mqtt:1.5.5-claude.4`, which brings in
+the original bridge's changes since 1.5.5:
+
+- **Clean mode** on wet/dry robots such as the UR2850 now offers **Wet** and
+  **Dry** instead of Normal and Matrix, and room buttons clean wet or dry to
+  match. A new **Deep** button runs a dry pass then a mop pass.
+- New **Floor plan** image entity, drawn from the robot's room map.
+- New dock water tank sensors, on docks that report them.
+- Entity IDs are unchanged. In side by side mode the new entities get the
+  `claude` prefix too.
+
 ## 1.0.8-claude.3
 
 - **Save log to files** (new, on by default): the log is also written to one
