@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.8-claude.5
+
+Bridge image: `ghcr.io/heff2010/shark2mqtt:1.5.5-claude.5`
+
+- **Deep runs:** if the robot stops partway through, the vacuum now shows
+  **Paused** instead of Idle, and status updates stay fast while it sits on
+  the dock between the vacuum and mop passes.
+
 ## 1.0.8-claude.4
 
 Bridge image: `ghcr.io/heff2010/shark2mqtt:1.5.5-claude.4`, which brings in
