@@ -12,7 +12,7 @@ A modified version of the [Shark2MQTT app](https://github.com/400HPMustang/shark
 
 ## First-time setup
 
-1. Install the **Shark Token Saver** Firefox extension from this repository's `tools/firefox-token-saver` folder (see its README) and log in to Shark with it. Click **Copy token** on the result page.
+1. Install the **Shark Token Saver** Firefox extension from [Heff2010/shark-token-saver](https://github.com/Heff2010/shark-token-saver) (see its README) and log in to Shark with it. Click **Copy token** on the result page.
    - Do a **fresh login** for this app. Don't reuse the original app's token file.
 2. In this app's **Configuration** tab, paste the token into **Shark token** and click **Save**.
 3. Leave **Run side by side** on if the original Shark2MQTT app is still running.

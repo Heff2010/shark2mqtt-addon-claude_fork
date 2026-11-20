@@ -41,7 +41,7 @@ Branch, one commit per item, one PR into the fork's `main`.
 | 2.2 | Base image → bridge fork | `FROM ghcr.io/<owner>/shark2mqtt:${SHARK2MQTT_VERSION}` with the version from Phase 1. |
 | 2.3 | New options | `shark_token` (password field, optional, seed-once as specified in `AUTH.md`), `pause_operating_mode` (`list(1\|0)`, default 1), `browser_login` (bool, default true). Map them to env vars in `run.sh`; update `translations/en.yaml` and `DOCS.md`. |
 | 2.4 | Prebuilt images | A GitHub Actions workflow that builds amd64 and aarch64 images (e.g. with the Home Assistant builder action) and pushes `ghcr.io/<owner>/{arch}-addon-claude-shark2mqtt`. Add the `image:` key so HA pulls instead of building. |
-| 2.5 | Extension in `tools/` | Already present. Keep its README's HA steps in line with the `apps/data` path. |
+| 2.5 | Extension | Moved to its own repo, [shark-token-saver](https://github.com/Heff2010/shark-token-saver). Keep its README's HA steps in line with the `apps/data` path. |
 
 **Acceptance**
 - The seed-once logic has tests covering first seed, unchanged value, new value, a bare refresh token, invalid JSON, and that no token value is ever logged.
@@ -62,7 +62,7 @@ Design in `AUTH.md`. Includes the extension's capture-only mode and, optionally,
   - If there are new commits, merge them into a `sync/upstream-<date>` branch and open a PR, so the tests run on it.
   - On a merge conflict, open an issue instead.
   - Wrapper: also flag when upstream bumps `SHARK2MQTT_VERSION`.
-- Add a CI check that the extension's constants still match the bridge's `REGIONS` and `TokenData` (`tools/firefox-token-saver/tests/parity.test.js`).
+- ~~Add a CI check that the extension's constants still match the bridge's `REGIONS` and `TokenData`.~~ Done in [shark-token-saver](https://github.com/Heff2010/shark-token-saver), which runs `tests/parity.test.js` against upstream weekly.
 - Note that GitHub disables scheduled workflows in forks until Actions is enabled, and pauses them after 60 days without repo activity.
 
 ## Phase 5: Research only, live updates instead of polling

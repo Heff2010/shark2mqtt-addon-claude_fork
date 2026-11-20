@@ -29,7 +29,7 @@ the built-in Shark login kept failing. This fork fixes those:
 - **Faster updates** as soon as a clean job starts, plus two new diagnostic
   entities, **System Status Code** and **Job Active**.
 - **Token login.** You log in to Shark yourself in Firefox with the included
-  [Shark Token Saver](tools/firefox-token-saver) extension and paste the token
+  [Shark Token Saver](https://github.com/Heff2010/shark-token-saver) extension and paste the token
   into the app. The app's automated browser login is off by default, because it
   fails on many setups and repeated failures can lock your Shark account.
 - **Side by side mode**, so this app can run next to the original Shark2MQTT
@@ -99,8 +99,8 @@ listed above.
 
 ## Credits and attribution
 
-The Shark Token Saver extension ([`tools/firefox-token-saver/`](tools/firefox-token-saver))
-is based on the design of **OnStar Auth Token Saver** by Matt Nelson
+The Shark Token Saver extension, now in its own repository at
+https://github.com/Heff2010/shark-token-saver, is based on the design of **OnStar Auth Token Saver** by Matt Nelson
 ([metheos](https://github.com/metheos)): https://github.com/metheos/onstar_firefox
 
 Its overall structure, the way it catches the login's final redirect to the
@@ -110,13 +110,9 @@ shark2mqtt token file format, the result page, the Home Assistant steps and the
 tests.
 
 **License note:** the original OnStar Auth Token Saver repository has no
-license. The parts of this extension derived from it remain the work of their
-original author and are credited to that author. Nothing in this repository
-relicenses them; any license here covers only the changes and additions made
-here. They are included in good faith, with credit, and will be removed if the
-original author asks. If this extension is no longer in this repository, it was
-removed at the original creator's request. Original authors can request removal
-by opening an issue on this repository.
+license. The extension no longer lives in this repository; see the full credits
+and license note in the Shark Token Saver repository. Nothing in this repository
+relicenses the parts derived from the original.
 
 The Shark login constants and token file format come from **shark2mqtt** by Cam
 Soper ([CamSoper](https://github.com/CamSoper)), MIT licensed:

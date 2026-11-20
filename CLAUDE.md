@@ -17,7 +17,7 @@ Two repositories are involved, both forks:
 | `docs/dev/DEVICE_FINDINGS.md` | What's been observed on the UR2850: the five issues, the `sys_st` table, the proposed state rules, data still needed. |
 | `docs/dev/CODE_MAP.md` | Where everything lives in both codebases (as of bridge v1.5.5 / wrapper v1.0.8), and where each fix goes. |
 | `docs/dev/AUTH.md` | How the Shark login works, why the built-in browser login fails, the token file, the in-HA login design. |
-| `tools/firefox-token-saver/` | Working Firefox extension that produces a token file by a manual login. Has its own README and tests. |
+| [`Heff2010/shark-token-saver`](https://github.com/Heff2010/shark-token-saver) | Working Firefox extension that produces a token file by a manual login. Moved out of this repo (was `tools/firefox-token-saver/`); has its own README, tests and CI. |
 
 ## Ground rules
 

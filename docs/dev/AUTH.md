@@ -20,9 +20,9 @@ Shark uses Auth0 with the login flow its phone app uses (authorization code + PK
 
 ## What works: a manual login in a real browser
 
-- `tools/firefox-token-saver/` is a temporary Firefox extension. It builds the authorize URL above, lets the user log in by hand (Turnstile passes for a real person), watches for the 302 `Location` header to the custom scheme, exchanges the code, and saves `shark2mqtt_tokens.json`.
+- [Shark Token Saver](https://github.com/Heff2010/shark-token-saver) (formerly `tools/firefox-token-saver/` here) is a Firefox extension. It builds the authorize URL above, lets the user log in by hand (Turnstile passes for a real person), watches for the 302 `Location` header to the custom scheme, exchanges the code, and saves `shark2mqtt_tokens.json`.
 - **Verified in production (2026-10-29):** with that file in the app's `/data`, the bridge logged `Loaded cached tokens…`, then `Ayla refresh failed, re-authenticating via Auth0` (expected, because the file has no Ayla tokens), `Ayla sign-in successful`, discovered the robot, loaded the rooms and published discovery. No browser login was needed.
-- The extension's helpers are checked against the bridge's own Python by `tools/firefox-token-saver/tests/parity.test.js`. That covers the PKCE challenge, the authorize params for both regions, and loading the token file through `SharkAuth`.
+- The extension's helpers are checked against the bridge's own Python by its `tests/parity.test.js`, which that repo's CI runs against the latest upstream bridge. That covers the PKCE challenge, the authorize params for both regions, and loading the token file through `SharkAuth`.
 
 ### Token file (`shark2mqtt_tokens.json`, the `TokenData` model)
 ```json
@@ -59,7 +59,7 @@ Goal: anyone can sign in to Shark from the app's own page in HA's sidebar (ingre
 6. The panel shows success. Later, if the bridge reports an auth error, the panel shows "login needed" with the button again.
 
 ### Getting the code back into HA
-- **Companion extension (recommended):** add a *capture-only* mode to `tools/firefox-token-saver/`. When it sees a custom-scheme redirect for a login it didn't start, it shows the full callback URL with a Copy button, with no exchange of its own. The app holds the PKCE secret, so the extension needs nothing else. A Chrome version is also worth building: Manifest V3 still allows non-blocking `webRequest.onHeadersReceived` observation with host permissions.
+- **Companion extension (recommended):** add a *capture-only* mode to the [Shark Token Saver](https://github.com/Heff2010/shark-token-saver). When it sees a custom-scheme redirect for a login it didn't start, it shows the full callback URL with a Copy button, with no exchange of its own. The app holds the PKCE secret, so the extension needs nothing else. A Chrome version is also worth building: Manifest V3 still allows non-blocking `webRequest.onHeadersReceived` observation with host permissions.
 - **No extension (fallback):** open the browser's developer tools on the Network tab with "Preserve log" on before logging in, then copy the custom-scheme URL from the last redirect. **Open question:** what Chrome and Firefox actually show at the hand-off (a failed request entry? the `Location` header on `/authorize/resume`? an error page that shows the URL?). The user needs to test this before the panel's instructions are written.
 - **Code lifetime:** believed to be short (around a minute). Verify, and make the panel tell the user to paste promptly. Exchange the code the moment it's pasted.
 - **Phones:** not supported. The Shark app intercepts the redirect, and mobile browsers lack developer tools. The panel should say to use a computer.
